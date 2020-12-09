@@ -1,0 +1,37 @@
+{
+  "name": "cn_interactive_auth",
+  "version": "1.0.0",
+  "description": "Interactive Authentication for Computer Networks ",
+  "main": "app.js",
+  "scripts": {
+    "start": "npm app.js",
+    "app": "nodemon app.js",
+    "client-install": "npm install --prefix client",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run app\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neerajp99/interactive_auth.git"
+  },
+  "keywords": [
+    "auth",
+    "computer-networks",
+    "cn"
+  ],
+  "author": "neerajp99",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neerajp99/interactive_auth/issues"
+  },
+  "homepage": "https://github.com/neerajp99/interactive_auth#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.5",
+    "nodemon": "^2.0.6",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0"
+  }
+}
