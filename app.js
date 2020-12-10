@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const passport = require('passport')
 const keys = require('./config/keys') 
+const userAuth = require('./routes/api/userAuth')
 
 // Initialize the app
 const app = express()
@@ -33,8 +34,10 @@ mongoose.connect(
     console.log(error)
 })
 
+app.use('/api/userAuth/', userAuth)
+
 // Start the server
-const PORT = process.env.PORT || 4010
+const PORT = process.env.PORT || 5006
 app.listen(PORT, () => {
     console.log(`App is listening on the port ${PORT}`)
 })
