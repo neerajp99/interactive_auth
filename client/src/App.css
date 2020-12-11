@@ -12,6 +12,10 @@
   font-weight: normal;
 }
 
+.test {
+  background-color: blanchedalmond;
+}
+
 .App {
   text-align: center;
   font-family: Dinn;
@@ -20,6 +24,88 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.image_col{
+  display: flex;
+  height: 100vh;
+}
+
+.log_ill {
+  width: auto;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.form_box {
+  background-color: #30326B;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+  align-items: center;
+  height: 100%;
+  border-radius: 15px 0px 0px 15px;
+}
+
+.new_form {
+  width: 70%;
+}
+
+.form_text {
+  background-color: transparent;
+  font-family: Dinn;
+}
+
+.form_text:placeholder {
+  color: white;
+}
+
+.form_button {
+  width: 100%;
+  font-family: Dinn;
+  color: #30326B;
+  font-size: 18px;
+  background: white;
+  border-color: #30326B;
+}
+
+.form_button:hover{
+  background-color: teal;
+  border-color: teal;
+}
+
+.caption {
+  color: white;
+  font-family: Lato-Bold;
+}
+
+.login-heading {
+  font-family: Dinn;
+  color: white;
+}
+
+.login-subheading {
+  font-family: Dinn;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.check_test {
+  color: white;
+  font-family: Lato-Bold;
+  font-size: 15px;
+  margin-top: 2px;
+}
+
+.link {
+  color: white;
+  text-decoration: underline;
+}
+
+.link:hover{
+  color: white;
 }
 
 @media (prefers-reduced-motion: no-preference) {
