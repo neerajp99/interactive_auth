@@ -6,6 +6,8 @@ const fs = require('fs')
 const randy = require('randy')
 const path = require('path')
 const { authorize } = require('passport')
+const jwt = require("jsonwebtoken")
+const keys = require('../../config/keys')
  
 /* Check for primes using Miller-Rabin Probabilistic test.
  * Checks for nontrivial square roots of 1 modulo n
@@ -99,14 +101,12 @@ router.post("/register", (req, res) => {
             }
             // Compute N = p * q 
             const N = p * q
-            console.log('N', N)
 
             // Pick a random number w = {1, 2, ....., N-1} uniformly at random 
             const w = bigInt(Math.random() * (N-1) + 1)
-            console.log('w', w)
 
             // Compute v 
-            const v = bigInt(w.square() % N)
+            const v = bigInt(w.square().mod(N))
             let v_transform = bigInt(v)['value']
 
             // Create a new mongoose model schema
@@ -124,7 +124,6 @@ router.post("/register", (req, res) => {
                 // Create a local file and save to it 
                 let content = "hello world!"
                 current = process.cwd()
-                console.log('Current: ', current)
                 let createStream = fs.createWriteStream(`${current}/${newUser.email}.txt`);
                 createStream.end();
                 let writeStream = fs.createWriteStream(`${current}/${newUser.email}.txt`);
@@ -163,7 +162,7 @@ router.post("/login", (req, res) => {
         // Open the local file with the value of w and n 
         current_file = ""
         try {
-            const data = fs.readFileSync('tanuj@gmail.com.txt', 'utf8')
+            const data = fs.readFileSync(`${data.email}.txt`, 'utf8')
             current_file += data
         } catch (err) {
             console.error("File Error: ", err)
@@ -182,56 +181,69 @@ router.post("/login", (req, res) => {
             gcd = bigInt.gcd(x, n)
         }
 
-        console.log('V', v)
-        console.log('X: ', x)
-
         // Calculate the value of y 
-        let y = bigInt(x.square() % n)
-
-        console.log('Y: ', y)
+        let y = bigInt(x.square().mod(n))
 
         // Generate a random value between 0 and 1 
-        // let b = Math.round(Math.random())
-        let b = 0
+        let b = Math.round(Math.random())
         // Calculate the value of z 
         let z = 0
+        
+        // Conditions for getting the value of z 
         if(b === 0) {
             z = x 
         } else {
             z = x.multiply(w)
         }
-
-        console.log('Z: ', z)
-        console.log('N: ', n)
         
         // Check for authorization 
         let authorize = false 
         let sq_z = bigInt(z.square())
         let vy = y.multiply(v)
 
-        console.log('Z2: ', sq_z)
-
         if (b === 0) {
-            let temp = y.mod(n)
-            console.log(temp)
-            console.log('jajaj', sq_z.mod(n))
             if (sq_z.mod(n).equals(y)){
                 authorize = true 
             }    
         }
         else if (b === 1) {
-            if (sq_z.mod(n).equals(vy)) {
+            let difference = sq_z.subtract(vy)
+            if (difference.mod(n).equals(0)) {
                 authorize = true
             }
         }
         else {
-            authorize = True
+            authorize = True 
         }
         console.log('AUTHORIZE', authorize)
-        console.log(sq_z.mod(n).subtract(y))
+
+        // Create a bearer token for user authentication if the user
+        if (authorize) {
+            // Create payload 
+            const payload = {
+                id: data.id,
+                email: data.email,
+            }
+
+            // Sign jwt token 
+            jwt.sign(
+                payload,
+                keys.secretOrKey,
+                {
+                    expiresIn: 10000
+                },
+                (error, token) => {
+                    return res.json({
+                        success: true,
+                        token: "Bearer " + token
+                    })
+                }
+            )
+        } else {
+            return res.status(401).json("Incorrect password!")
+        }
         
     })
 })
 
 module.exports = router
-
