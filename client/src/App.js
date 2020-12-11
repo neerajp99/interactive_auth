@@ -1,5 +1,7 @@
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';  
+import './fonts/DIN Next LT Pro Medium.ttf';
+import './fonts/Lato-Bold.ttf';
+
 
 function App() {
   return (
