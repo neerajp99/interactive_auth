@@ -71,7 +71,7 @@ function generate_prime_bits(length) {
 // Generate 50 bit prime numbers
 function generate_prime_number(prime){
     while (miller_rabin_check_prime(prime) === false){
-        prime = generate_prime_bits(30)
+        prime = generate_prime_bits(50)
     }
     return prime
 }
@@ -100,7 +100,8 @@ router.post("/register", (req, res) => {
                 q = generate_prime_number(q)
             }
             // Compute N = p * q 
-            const N = p * q
+            const N = bigInt(p * q)
+            let n_transform = bigInt(N)['value']
 
             // Pick a random number w = {1, 2, ....., N-1} uniformly at random 
             const w = bigInt(Math.random() * (N-1) + 1)
@@ -128,7 +129,8 @@ router.post("/register", (req, res) => {
                 createStream.end();
                 let writeStream = fs.createWriteStream(`${current}/${newUser.email}.txt`);
                 writeStream.write(`${w}\n`);
-                writeStream.write(`${N}`);
+                writeStream.write(`${N}\n`);
+                writeStream.write(`${req.body.password}`)
                 writeStream.end();
                 res.json(user)
             })
@@ -154,21 +156,31 @@ router.post("/login", (req, res) => {
             const error = "No user with this email address exists!"
             return res.status(404).json(error)
         }
+        
         let password = data.password 
         let v = password.v 
         v = bigInt(v)
         let n = password.n 
+        console.log('N', n)
 
         // Open the local file with the value of w and n 
         current_file = ""
+        let info = data
         try {
-            const data = fs.readFileSync(`${data.email}.txt`, 'utf8')
-            current_file += data
+            const datas = fs.readFileSync(`${info.email}.txt`, 'utf8')
+            current_file += datas
         } catch (err) {
             console.error("File Error: ", err)
         }
         file_data = current_file.split("\n")
         let w = bigInt(file_data[0])
+
+        let passwords = file_data[2]
+
+        if(passwords !== req.body.password){
+            console.log('Incorrect password')
+            return res.status(400).json('Incorrect password!')
+        }
 
         // Pick a random value of x from the range 1 to N-1 
         let x = bigInt(Math.random() * (n-1) + 1)
@@ -215,7 +227,14 @@ router.post("/login", (req, res) => {
         else {
             authorize = True 
         }
-        console.log('AUTHORIZE', authorize)
+
+        // console.log('x', x)
+        // console.log('y', y)
+        // console.log('z', z)
+        // console.log('n', n)
+        // console.log('v', v)
+        // console.log('b', b)
+        // console.log('AUTHORIZE', authorize)
 
         // Create a bearer token for user authentication if the user
         if (authorize) {
