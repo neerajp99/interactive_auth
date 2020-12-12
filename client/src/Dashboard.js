@@ -3,13 +3,20 @@ import './App.css';
 import Gandalf from './assets/gandalf.png'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Button, Navbar } from 'react-bootstrap';
+import setAuthToken from "./setAuthToken"
 
 class Dashboard extends Component {
+  onClick= event => {
+    localStorage.removeItem("jwtToken");
+    // Remove Auth headers from axios request
+    setAuthToken(false);
+    this.props.history.push('/login')
+  };
     render() {
         return (
           <Col>
             <Navbar className="justify-content-end">
-                <Button variant="outline-primary">
+                <Button variant="outline-primary" onClick={this.onClick}>
                   Logout
                 </Button>
             </Navbar>

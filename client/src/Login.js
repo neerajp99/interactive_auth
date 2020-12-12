@@ -8,6 +8,7 @@ import { Col, Row, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import setAuthToken from "./setAuthToken";
 import jwt_decode from "jwt-decode";
+import { Link } from "react-router-dom";
 
 
 class Login extends Component {
@@ -81,7 +82,7 @@ class Login extends Component {
                             Login
                         </Button>
                         </Form>
-                        <p className="check_test">First Time? <a className="link" href={"https://google.com/"}>Sign Up</a></p>
+                        <p className="check_test">First Time? <Link to="/signup">Sign Up</Link></p>
                         </div>
                     </Col>
                  </Row>
