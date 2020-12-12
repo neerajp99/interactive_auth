@@ -12,7 +12,6 @@ const keys = require('../../config/keys')
 /* Check for primes using Miller-Rabin Probabilistic test.
  * Checks for nontrivial square roots of 1 modulo n
 */
-
 function miller_rabin_check_prime(val, test_no = 128){
     // Handling the edge cases where the value is not even
     if(val.equals(2) || val.equals(3)){
@@ -228,13 +227,13 @@ router.post("/login", (req, res) => {
             authorize = True 
         }
 
-        // console.log('x', x)
-        // console.log('y', y)
-        // console.log('z', z)
-        // console.log('n', n)
-        // console.log('v', v)
-        // console.log('b', b)
-        // console.log('AUTHORIZE', authorize)
+        console.log('x', x)
+        console.log('y', y)
+        console.log('z', z)
+        console.log('n', n)
+        console.log('v', v)
+        console.log('b', b)
+        console.log('AUTHORIZE', authorize)
 
         // Create a bearer token for user authentication if the user
         if (authorize) {
