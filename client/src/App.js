@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./Login"
 import SignUp from "./Signup"
+import Dashboard from "./Dashboard"
 import setAuthToken from "./setAuthToken"
 import jwt_decode from "jwt-decode"
 
@@ -32,6 +33,7 @@ function App() {
   return (
     <Router>
           <div className="App">
+          <Route exact path="/" component={Dashboard} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={SignUp} />
           </div>
